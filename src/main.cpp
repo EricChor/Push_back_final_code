@@ -7,22 +7,38 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "vex.h"
+#include "driver_control.h"
+#include "robot_config.h"
+#include "routines.h"
+
+#include "odometry.h"
+
+#include <iostream>
 
 using namespace vex;
 
-// A global instance of vex::brain used for printing to the V5 brain screen
-vex::brain       Brain;
+competition Competition;
 
-// define your global instances of motors and other devices here
+void autonomousControl(){
+    //test_routine();
+    thread telemetry(odom_telemetry);
+}
+
+void userControl(){
+    thread arcade(arcade_drive);
+
+    Controller.ButtonR1.pressed(intake_pressed);
+    Controller.ButtonR2.pressed(outtake_pressed);
+
+    Controller.ButtonL1.pressed(load_pressed);
+    Controller.ButtonL2.pressed(unload_pressed);
+
+}
+
 
 
 int main() {
+    Competition.drivercontrol(userControl);
+    Competition.autonomous(autonomousControl);
 
-    Brain.Screen.printAt( 10, 50, "Hello V5" );
-   
-    while(1) {
-        
-        // Allow other tasks to run
-        this_thread::sleep_for(10);
-    }
 }
