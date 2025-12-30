@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "robot_config.h"
 #include "trig.h"
+#include "driver_control.h"
 #define PI 3.14159
 
 void inertial_turn(int max_speed, float target_heading, float max_time, float kP, float kI, float kD, float settle_error, int settle_time, float settle_speed){
@@ -225,4 +226,62 @@ void drive_straight(int max_linear_speed, int max_angular_speed, float target_he
 
     }
 
+}
+
+void color_sorting_intake(){
+    double red_value = 0;
+    double blue_value = 224;
+    double blue_threshold = 50;
+    double red_threshold = 50;
+    double optical_value = 0;
+    double red_hue_difference = 0;
+    double blue_hue_difference = 0;
+    main_intake.spin(fwd,100,pct);
+
+    alliance_color block_color = current_alliance_color;
+
+    while (color_sorting_running){
+        optical_value = color_sorting_sensor.hue();
+        red_hue_difference = red_value - optical_value;
+
+        if(fabs(red_hue_difference) > 180){
+            if(red_hue_difference > 0){
+                red_hue_difference -= 360;
+            } else {
+                red_hue_difference += 360;
+            }
+        }
+
+        blue_hue_difference = blue_value - optical_value;
+        if(fabs(blue_hue_difference) > 180){
+            if(blue_hue_difference > 0){
+                blue_hue_difference -= 360;
+            } else {
+                blue_hue_difference += 360;
+            }
+        }
+
+
+        if(color_sorting_sensor.isNearObject()){
+            if(fabs(red_hue_difference) < fabs(blue_hue_difference)){
+                block_color = RED;
+            } else {
+                block_color = BLUE;
+            }
+        }
+   
+        if((current_alliance_color != block_color) && ((fabs(blue_hue_difference) < blue_threshold) || (fabs(red_hue_difference)) < red_threshold) && ((blue_threshold!=0) || (red_threshold!=0))){
+            main_intake.spin(fwd,100,pct);
+            final_intake_stage.spin(fwd,100,pct);
+        } else {
+            vex::task::sleep(100);
+            main_intake.spin(reverse,100,pct);
+            final_intake_stage.spin(reverse,100,pct);
+            vex::task::sleep(250);
+            final_intake_stage.spin(fwd,100,pct);
+            block_color = current_alliance_color;
+        }
+
+        vex::task::sleep(10);
+    }
 }

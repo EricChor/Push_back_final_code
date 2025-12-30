@@ -26,10 +26,30 @@ extern motor_group right_drive;
 extern inertial inertial_sensor;
 
 //intake
-extern motor intake;
+extern motor main_intake;
+extern motor final_intake_stage;
+extern motor intermediate_intake_stage;
 
 //timers
 extern timer master_timer;
 
 //loader pneumatic
+
 extern digital_out loader;
+extern digital_out tracking_wheel_cylinder;
+extern digital_out descorer;
+extern digital_out high_goal_aligner;
+
+extern optical color_sorting_sensor;
+
+enum alliance_color{
+    RED,
+    BLUE,
+    NEUTRAL
+};
+
+extern alliance_color current_alliance_color;
+
+extern rotation lateral_tracking;
+
+extern rotation vertical_tracking;

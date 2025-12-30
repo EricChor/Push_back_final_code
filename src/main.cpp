@@ -10,7 +10,7 @@
 #include "driver_control.h"
 #include "robot_config.h"
 #include "routines.h"
-
+#include "autonomous.h"
 #include "odometry.h"
 
 #include <iostream>
@@ -20,24 +20,31 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    //test_routine();
+    odom_setup(2,2,2.75,2.75,1.0);
     thread telemetry(odom_telemetry);
+    test_routine();
 }
 
 void userControl(){
     thread arcade(arcade_drive);
+    thread loader(loader_controller);
+    thread descoring(descorer_controller);
 
+    color_sorting_sensor.setLightPower(100,pct);
+    color_sorting_sensor.setLight(ledState::on);
+
+    Controller.ButtonA.pressed(aligner_controller);
+
+    Controller.ButtonL1.pressed(score_high_pressed);
+    Controller.ButtonL2.pressed(score_low_pressed);
     Controller.ButtonR1.pressed(intake_pressed);
     Controller.ButtonR2.pressed(outtake_pressed);
-
-    Controller.ButtonL1.pressed(load_pressed);
-    Controller.ButtonL2.pressed(unload_pressed);
-
 }
 
 
 
 int main() {
+    Competition.bStopTasksBetweenModes = true;
     Competition.drivercontrol(userControl);
     Competition.autonomous(autonomousControl);
 

@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "driver_control.h"
 #include "robot_config.h"
+#include "autonomous.h"
 
 void robot_setup(){
     //drivebase
@@ -29,40 +30,133 @@ void arcade_drive(){
 
 intake_state current_intake_state = STOP;
 
-void intake_controller(){
-    if(current_intake_state == INTAKE){
-        intake.spin(fwd,100,pct);
-    } else if (current_intake_state == OUTTAKE){
-        intake.spin(reverse,100,pct);
-    } else {
-        intake.stop(coast);
-    }
-}
-
 void intake_pressed(){
-    if(current_intake_state == INTAKE){
-        current_intake_state = STOP;
-    } else {
+    if(current_intake_state != INTAKE){
         current_intake_state = INTAKE;
+    } else {
+        current_intake_state = STOP;
     }
     intake_controller();
 }
 
 void outtake_pressed(){
-    if(current_intake_state == OUTTAKE){
-        current_intake_state = STOP;
-    } else {
+    if(current_intake_state != OUTTAKE){
         current_intake_state = OUTTAKE;
+    } else {
+        current_intake_state = STOP;
+    }
+    intake_controller();
+}
+
+void score_high_pressed(){
+    if(current_intake_state != SCORE_HIGH){
+        current_intake_state = SCORE_HIGH;
+    } else {
+        current_intake_state = STOP;
+    }
+    intake_controller();
+}
+
+void score_low_pressed(){
+    if(current_intake_state != SCORE_LOW){
+        current_intake_state = SCORE_LOW;
+    } else {
+        current_intake_state = STOP;
     }
     intake_controller();
 }
 
 
+thread color_sorting_thread;
+bool color_sorting_running = false;
 
-void load_pressed(){
-    loader.set(LOAD);
+void start_color_sorting() {
+    if (!color_sorting_running) {
+        color_sorting_running = true;
+        color_sorting_thread = thread(color_sorting_intake);
+    }
 }
 
-void unload_pressed(){
-    loader.set(UNLOAD);
+void stop_color_sorting() {
+    if (color_sorting_running) {
+        color_sorting_running = false;
+        color_sorting_thread.join(); 
+    }
 }
+
+void intake_controller(){
+    switch (current_intake_state){
+        case STOP:{
+            stop_color_sorting();
+            main_intake.stop(coast);
+            intermediate_intake_stage.stop(coast);
+            final_intake_stage.stop(coast);
+            break;
+        }
+
+        case INTAKE:{
+            // main_intake.spin(fwd,100,pct);
+            // intermediate_intake_stage.stop(coast);
+            // final_intake_stage.spin(fwd,100,pct);
+            start_color_sorting();
+            break;
+        }
+
+        case OUTTAKE:{
+            stop_color_sorting();
+            main_intake.spin(reverse,100,pct);
+            intermediate_intake_stage.stop(coast);
+            final_intake_stage.spin(fwd,100,pct);
+            break;
+        }
+        
+        case SCORE_HIGH:{
+            stop_color_sorting();
+            main_intake.spin(fwd,100,pct);
+            intermediate_intake_stage.spin(reverse,100,pct);
+            final_intake_stage.spin(fwd,100,pct);
+            break;
+        }
+        case SCORE_LOW:{
+            stop_color_sorting();
+            main_intake.spin(fwd,100,pct);
+            intermediate_intake_stage.spin(reverse,100,pct);
+            final_intake_stage.spin(reverse,100,pct);
+            break;
+        }
+    }
+}
+
+void loader_controller(){
+    while(true){
+        if(Controller.ButtonB.pressing()){
+            loader.set(LOAD);
+        } else {
+            loader.set(UNLOAD);
+        }
+    }
+}
+
+void descorer_controller(){
+    while(true){
+        if(Controller.ButtonDown.pressing()){
+            descorer.set(DESCORE);
+        } else {
+            descorer.set(UNDESCORE);
+        }
+    }
+}
+
+
+aligner_states current_aligner_state = UNALIGN;
+
+void aligner_controller(){
+    if(current_aligner_state == ALIGN){
+        current_aligner_state = UNALIGN;
+        high_goal_aligner.set(UNALIGN);
+    } else {
+        current_aligner_state = ALIGN;
+        high_goal_aligner.set(ALIGN);
+    }
+}
+
