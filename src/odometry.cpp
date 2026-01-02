@@ -151,8 +151,7 @@ void odom_telemetry(){
         // left_motor_pos = degToRad(left_motor_pos) * (wheel_diameter/2) * drivebase_gear_ratio;
         // printf("%f\n",left_motor_pos);
 
-        //printf("X:%f Y:%f θ:%f\n",x_pos,y_pos,theta_pos);
-        printf("X:%f Y:%f θ:%f\n",x_pos,y_pos,theta_pos);
+        print_odom_pos();
         vex::task::sleep(40);
     }
 }

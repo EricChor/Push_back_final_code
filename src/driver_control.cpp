@@ -95,10 +95,10 @@ void intake_controller(){
         }
 
         case INTAKE:{
-            // main_intake.spin(fwd,100,pct);
-            // intermediate_intake_stage.stop(coast);
-            // final_intake_stage.spin(fwd,100,pct);
-            start_color_sorting();
+            main_intake.spin(fwd,100,pct);
+            intermediate_intake_stage.stop(coast);
+            final_intake_stage.spin(fwd,100,pct);
+            // start_color_sorting();
             break;
         }
 
