@@ -34,5 +34,7 @@ extern void odom_setup(double vertical_encoder_distance_from_center,double later
 
 extern void odom_telemetry();
 
+extern void odom_thread();
+
 extern void print_odom_pos();
 

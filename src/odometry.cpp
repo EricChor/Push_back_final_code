@@ -83,8 +83,8 @@ void update_pose(){
 
     delta_vertical_encoder_pos = vertical_encoder_pos - prev_vertical_encoder_pos; //calculate change in vertical encoder position
     //printf("delta_vertical_encoder:%f\n",delta_vertical_encoder_pos);
-    delta_lateral_encoder_pos  = lateral_encoder_pos - prev_lateral_encoder_pos;   //calculate change in lateral encoder position
-
+    // delta_lateral_encoder_pos  = lateral_encoder_pos - prev_lateral_encoder_pos;   //calculate change in lateral encoder position
+    delta_lateral_encoder_pos = 0;
     delta_theta = theta_pos - prev_theta_pos;                                      //calculate change in inertial sensor position
     //printf("%f:%f:delta theta:%f\n",theta_pos,prev_theta_pos,delta_theta);
 

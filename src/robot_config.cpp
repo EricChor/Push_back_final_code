@@ -15,17 +15,17 @@ controller Controller(primary);
 // motor left_front_motor(PORT8, ratio6_1,true);
 // motor left_rear_bottom_motor(PORT6, ratio6_1, true);
 // motor left_rear_top_motor(PORT9, ratio6_1,false);
-motor left_front_motor(PORT8, ratio6_1,true);
-motor left_rear_bottom_motor(PORT19, ratio6_1, true);
-motor left_rear_top_motor(PORT20, ratio6_1,false);  
+motor left_front_motor(PORT13, ratio6_1,true);
+motor left_rear_bottom_motor(PORT12, ratio6_1, true);
+motor left_rear_top_motor(PORT11, ratio6_1,false);  
 
 //right drive train
 // motor right_front_motor(PORT17, ratio6_1,false);
 // motor right_rear_bottom_motor (PORT13, ratio6_1,false);
 // motor right_rear_top_motor(PORT14, ratio6_1, true);
-motor right_front_motor(PORT1, ratio6_1,false);
-motor right_rear_bottom_motor (PORT9, ratio6_1,false);
-motor right_rear_top_motor(PORT10, ratio6_1, true);
+motor right_front_motor(PORT3, ratio6_1,false);
+motor right_rear_bottom_motor (PORT2, ratio6_1,false);
+motor right_rear_top_motor(PORT1, ratio6_1, true);
 
 //drivebase_motor_groups
 motor_group left_drive(left_front_motor,left_rear_bottom_motor,left_rear_top_motor);
@@ -38,15 +38,15 @@ inertial inertial_sensor(PORT5);
 // motor main_intake(PORT15, ratio6_1, false);
 // motor final_intake_stage(PORT10, ratio18_1,false);
 // motor intermediate_intake_stage(PORT16, ratio18_1, false);
-motor main_intake(PORT7, ratio6_1, false);
+motor main_intake(PORT10, ratio6_1, false);
 motor final_intake_stage(PORT3, ratio18_1,false);
-motor intermediate_intake_stage(PORT6, ratio18_1, false);
+motor intermediate_intake_stage(PORT16, ratio18_1, false);
 
 //timer
 timer master_timer;
 
 // optical color_sorting_sensor(PORT2);
-optical color_sorting_sensor(PORT11);
+optical color_sorting_sensor(PORT17);
 
 digital_out loader(Brain.ThreeWirePort.A);
 digital_out tracking_wheel_cylinder(Brain.ThreeWirePort.B);
