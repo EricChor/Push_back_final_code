@@ -20,9 +20,7 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    odom_setup(2,2,2.75,2.75,1.0);
-    thread telemetry(odom_telemetry);
-    test_routine();
+    left_side_half_AWP();
 }
 
 void userControl(){

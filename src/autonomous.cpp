@@ -139,7 +139,7 @@ void drive_straight(int max_linear_speed, int max_angular_speed, float target_he
 
         angular_previous_error = angular_error;
 
-        current_position = left_middle_motor.position(degrees)-initial_position * 3.25 * M_PI /360 * 3.0/5.0;
+        current_position = left_middle_motor.position(degrees)-initial_position * 3.25 * M_PI /360 * 1.0/2.0;
 
         linear_error = target_distance - current_position;
 

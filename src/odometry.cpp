@@ -61,7 +61,8 @@ void odom_setup(double vertical_encoder_distance_from_center,double lateral_enco
 
     // left_middle_motor.resetPosition();     //reset tracking encoders
     inertial_sensor.resetHeading();        //reset inertial sensor
-    vertical_tracking.resetPosition();
+    // vertical_tracking.resetPosition();
+    left_front_motor.resetPosition();
     lateral_tracking.resetPosition();
 }
 
@@ -75,7 +76,8 @@ void set_pose(double initial_x_pos,double initial_y_pos,double starting_theta){
 // float lateral_accumulator = 0;
 
 void update_pose(){
-    vertical_encoder_pos = vertical_tracking.position(degrees); //update vertical encoder position
+    // vertical_encoder_pos = vertical_tracking.position(degrees); //update vertical encoder position
+    vertical_encoder_pos = left_front_motor.position(degrees);
     lateral_encoder_pos = lateral_tracking.position(degrees);
     //printf("vertical_encoder_pos:%f\n",vertical_encoder_pos);                             //update lateral encoder position (need to change, no lateral encoder)
     theta_pos = inertial_sensor.heading(degrees);          //update inertial sensor position
