@@ -901,7 +901,7 @@ void drive_to_point_reverse_with_heading (double target_x_pos, double target_y_p
             // printf("finding heading\n");
         } else {
             // printf("heading lock\n");
-            angular_error = target_heading - current_heading + 180;
+            angular_error = target_heading - current_heading+180;
         }
         
         
@@ -981,12 +981,12 @@ void drive_to_point_reverse_with_heading (double target_x_pos, double target_y_p
             }
         }
 
-        if(distance_error < dead_zone_distance){
-            left_drive_angular_speed = 0;
-            right_drive_angular_speed = 0;
-            angular_error = 0;
-            angular_error = 0;
-        }
+        // if(distance_error < dead_zone_distance){
+        //     left_drive_angular_speed = 0;
+        //     right_drive_angular_speed = 0;
+        //     angular_error = 0;
+        //     angular_error = 0;
+        // }
 
         heading_scale_factor = cos(degToRad(angular_error));
         left_drive_linear_speed = left_drive_linear_speed * heading_scale_factor;   //scaling linear speeds by cos of angular speeds (drive train slows at large angular errors)

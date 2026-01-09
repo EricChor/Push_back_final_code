@@ -129,7 +129,7 @@ void intake_controller(){
 
 void loader_controller(){
     while(true){
-        if(Controller.ButtonB.pressing()){
+        if(Controller.ButtonRight.pressing()){
             loader.set(LOAD);
         } else {
             loader.set(UNLOAD);
@@ -139,7 +139,7 @@ void loader_controller(){
 
 void descorer_controller(){
     while(true){
-        if(Controller.ButtonDown.pressing()){
+        if(Controller.ButtonLeft.pressing()){
             descorer.set(DESCORE);
         } else {
             descorer.set(UNDESCORE);

@@ -20,7 +20,7 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    left_side_half_AWP();
+    left_side();
 }
 
 void userControl(){
