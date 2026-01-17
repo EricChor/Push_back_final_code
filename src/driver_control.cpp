@@ -127,23 +127,37 @@ void intake_controller(){
     }
 }
 
+bool LOAD_state = false;
 void loader_controller(){
     while(true){
         if(Controller.ButtonB.pressing()){
-            loader.set(LOAD);
-        } else {
-            loader.set(UNLOAD);
+            if (LOAD_state == false)
+            {
+                LOAD_state = true;
+                 loader.set(LOAD);
+                wait(200, msec);
+            }
+            else if (LOAD_state == true)
+            {
+                LOAD_state = false;
+                loader.set(UNLOAD);
+                wait(200, msec);
+            }
+            
+           
+            
         }
     }
 }
 
+descorer_states descorer_state = UNDESCORE;
 void descorer_controller(){
-    while(true){
-        if(Controller.ButtonDown.pressing()){
-            descorer.set(DESCORE);
-        } else {
-            descorer.set(UNDESCORE);
-        }
+    if(descorer_state == UNDESCORE){
+        descorer_state = DESCORE;
+        descorer.set(DESCORE);
+    } else {
+        descorer_state = UNDESCORE;
+        descorer.set(UNDESCORE);
     }
 }
 

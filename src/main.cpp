@@ -28,12 +28,12 @@ void autonomousControl(){
 void userControl(){
     thread arcade(arcade_drive);
     thread loader(loader_controller);
-    thread descoring(descorer_controller);
 
     color_sorting_sensor.setLightPower(100,pct);
     color_sorting_sensor.setLight(ledState::on);
 
     Controller.ButtonA.pressed(aligner_controller);
+    Controller.ButtonX.pressed(descorer_controller);
 
     Controller.ButtonL1.pressed(score_high_pressed);
     Controller.ButtonL2.pressed(score_low_pressed);

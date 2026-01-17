@@ -1,6 +1,7 @@
 #include "vex.h"
 #include "robot_config.h"
 #include "autonomous.h"
+#include "odometry.h"
 
 void test_routine(){
     
@@ -19,4 +20,14 @@ void test_routine(){
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);
+}
+
+void routine_1(){
+    while(inertial_sensor.isCalibrating())
+        vex::task::sleep(10);
+    printf("inertial sensor calibrated\n");
+    master_timer.clear();
+    inertial_sensor.resetHeading();
+
+    odom_setup(5.9433,0,3.36,3.36,5.0/3.0);
 }
