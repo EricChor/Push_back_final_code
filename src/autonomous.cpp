@@ -20,7 +20,7 @@ void inertial_turn(int max_speed, float target_heading, float max_time, float kP
     while(true){
         current_heading = inertial_sensor.heading();
         error = target_heading - current_heading;
-        printf("error:%f\n",error);
+        // printf("error:%f\n",error);
         if(fabs(error) > 180 ){
             if(error > 0){
                 error = error - 360;
@@ -110,7 +110,7 @@ void drive_straight(int max_linear_speed, int max_angular_speed, float target_he
     float angular_previous_error = 0;
     float angular_integral_error = 0;
 
-    float initial_position = left_middle_motor.position(degrees);
+    float initial_position = left_front_motor.position(degrees);
     float current_position = initial_position;
 
     float left_drive_angular_velocity = 0;
@@ -139,7 +139,7 @@ void drive_straight(int max_linear_speed, int max_angular_speed, float target_he
 
         angular_previous_error = angular_error;
 
-        current_position = left_middle_motor.position(degrees)-initial_position * 3.25 * M_PI /360 * 3.0/5.0;
+        current_position = (left_front_motor.position(degrees)-initial_position) * 3.25 * M_PI /360 * 1.0/2.0;
 
         linear_error = target_distance - current_position;
 

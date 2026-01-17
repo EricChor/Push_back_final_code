@@ -34,13 +34,13 @@ motor_group right_drive(right_front_motor,right_rear_bottom_motor,right_rear_top
 //inertial_sensor
 inertial inertial_sensor(PORT5);
 
-//intake
+//intakeport
 // motor main_intake(PORT15, ratio6_1, false);
 // motor final_intake_stage(PORT10, ratio18_1,false);
 // motor intermediate_intake_stage(PORT16, ratio18_1, false);
 motor main_intake(PORT10, ratio6_1, false);
 motor final_intake_stage(PORT16, ratio18_1,false);
-motor intermediate_intake_stage(PORT20, ratio18_1, false);
+motor intermediate_intake_stage(PORT8, ratio18_1, false);
 
 //timer
 timer master_timer;
