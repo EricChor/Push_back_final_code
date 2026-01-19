@@ -15,13 +15,11 @@ extern void score_high_pressed();
 
 extern void score_low_pressed();
 
-extern void loader_controller();
+extern void loader_pressed();
 
+extern void descorer_pressed();
 
-
-extern void descorer_controller();
-
-extern void aligner_controller();
+extern void aligner_pressed();
 
 enum intake_state{
     STOP,

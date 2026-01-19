@@ -20,23 +20,28 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    left_side();
+    Competition.bStopTasksBetweenModes = true;
+    // left_side();
+    // right_side();
+    sawp();
 }
 
 void userControl(){
+    Competition.bStopTasksBetweenModes = true;
     thread arcade(arcade_drive);
-    thread loader(loader_controller);
-    thread descoring(descorer_controller);
+    thread loader(loader_pressed);
+    thread descoring(descorer_pressed);
 
     color_sorting_sensor.setLightPower(100,pct);
     color_sorting_sensor.setLight(ledState::on);
 
-    Controller.ButtonA.pressed(aligner_controller);
-
+    Controller.ButtonA.pressed(aligner_pressed);
+    Controller.ButtonLeft.pressed(descorer_pressed);
     Controller.ButtonL1.pressed(score_high_pressed);
     Controller.ButtonL2.pressed(score_low_pressed);
     Controller.ButtonR1.pressed(intake_pressed);
     Controller.ButtonR2.pressed(outtake_pressed);
+    Controller.ButtonRight.pressed(loader_pressed);
 }
 
 
@@ -45,5 +50,6 @@ int main() {
     Competition.bStopTasksBetweenModes = true;
     Competition.drivercontrol(userControl);
     Competition.autonomous(autonomousControl);
-
+    loader.set(UNLOAD);
+    descorer.set(UNDESCORE);
 }

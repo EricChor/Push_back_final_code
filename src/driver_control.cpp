@@ -9,6 +9,8 @@ void robot_setup(){
     right_drive.setMaxTorque(100,pct);
     left_drive.setStopping(coast);
     right_drive.setStopping(coast);
+    loader.set(UNLOAD);
+    descorer.set(UNDESCORE);
 }
 
 void arcade_drive(){
@@ -115,6 +117,12 @@ void intake_controller(){
             main_intake.spin(fwd,100,pct);
             intermediate_intake_stage.spin(reverse,100,pct);
             final_intake_stage.spin(fwd,100,pct);
+            while(Controller.ButtonL1.pressing()){
+                vex::task::sleep(10);
+            }
+            main_intake.stop(coast);
+            intermediate_intake_stage.stop(coast);
+            final_intake_stage.stop(coast);
             break;
         }
         case SCORE_LOW:{
@@ -123,34 +131,42 @@ void intake_controller(){
             intermediate_intake_stage.spin(reverse,100,pct);
             final_intake_stage.spin(reverse,100,pct);
             break;
+            while(Controller.ButtonL2.pressing()){
+                vex::task::sleep(10);
+            }
+            main_intake.stop(coast);
+            intermediate_intake_stage.stop(coast);
+            final_intake_stage.stop(coast);
         }
     }
 }
 
-void loader_controller(){
-    while(true){
-        if(Controller.ButtonRight.pressing()){
-            loader.set(LOAD);
-        } else {
-            loader.set(UNLOAD);
-        }
+bool loader_state = 0; //0 = off | 1 = on
+void loader_pressed(){
+    if(loader_state){
+        loader_state = false;
+        loader.set(UNLOAD);
+    } else {
+        loader_state = true;
+        loader.set(LOAD);
     }
 }
 
-void descorer_controller(){
-    while(true){
-        if(Controller.ButtonLeft.pressing()){
-            descorer.set(DESCORE);
-        } else {
-            descorer.set(UNDESCORE);
-        }
+bool descore_state = 0; //0 = off | 1 = on
+void descorer_pressed(){
+    if(descore_state){
+        descore_state = false;
+        descorer.set(UNDESCORE);
+    } else {
+        descore_state = true;
+        descorer.set(DESCORE);
     }
 }
 
 
 aligner_states current_aligner_state = UNALIGN;
 
-void aligner_controller(){
+void aligner_pressed(){
     if(current_aligner_state == ALIGN){
         current_aligner_state = UNALIGN;
         high_goal_aligner.set(UNALIGN);
@@ -159,4 +175,3 @@ void aligner_controller(){
         high_goal_aligner.set(ALIGN);
     }
 }
-

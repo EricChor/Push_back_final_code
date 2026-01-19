@@ -20,7 +20,7 @@ void inertial_turn(int max_speed, float target_heading, float max_time, float kP
     while(true){
         current_heading = inertial_sensor.heading();
         error = target_heading - current_heading;
-        // printf("error:%f\n",error);
+        printf("error:%f\n",error);
         if(fabs(error) > 180 ){
             if(error > 0){
                 error = error - 360;
