@@ -22,12 +22,20 @@ competition Competition;
 void autonomousControl(){
     //thread telemetry(odom_telemetry);
     //test_routine();
-    routine_left();
-    //routine_right();
+    // routine_left();
+    routine_right();
 }
 
 void userControl(){
     thread arcade(arcade_drive);
+
+    odom_setup(-2.6,7.95,2.75,2.0,1.0/1.0);
+
+    thread odometry(odom_thread);
+    thread telemetry(odom_telemetry);
+
+    set_pose(0,0,0);
+
     // thread loader(loader_controller);
     tracking_wheel_cylinder=true;
 
