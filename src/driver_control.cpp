@@ -127,26 +127,14 @@ void intake_controller(){
     }
 }
 
-bool LOAD_state = false;
+loader_states load_state = UNLOAD;
 void loader_controller(){
-    while(true){
-        if(Controller.ButtonB.pressing()){
-            if (LOAD_state == false)
-            {
-                LOAD_state = true;
-                 loader.set(LOAD);
-                wait(200, msec);
-            }
-            else if (LOAD_state == true)
-            {
-                LOAD_state = false;
-                loader.set(UNLOAD);
-                wait(200, msec);
-            }
-            
-           
-            
-        }
+    if(load_state == UNLOAD){
+        load_state = LOAD;
+        loader.set(LOAD);
+    } else {
+        load_state = UNLOAD;
+        loader.set(UNLOAD);
     }
 }
 

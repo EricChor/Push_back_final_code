@@ -20,32 +20,36 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    odom_setup(2,2,2.75,2.75,1.0);
-    thread telemetry(odom_telemetry);
-    test_routine();
+    //thread telemetry(odom_telemetry);
+    //test_routine();
+    routine_left();
+    //routine_right();
 }
 
 void userControl(){
     thread arcade(arcade_drive);
-    thread loader(loader_controller);
+    // thread loader(loader_controller);
+    tracking_wheel_cylinder=true;
 
     color_sorting_sensor.setLightPower(100,pct);
     color_sorting_sensor.setLight(ledState::on);
 
-    Controller.ButtonA.pressed(aligner_controller);
+    Controller.ButtonB.pressed(aligner_controller);
     Controller.ButtonX.pressed(descorer_controller);
 
     Controller.ButtonL1.pressed(score_high_pressed);
     Controller.ButtonL2.pressed(score_low_pressed);
     Controller.ButtonR1.pressed(intake_pressed);
     Controller.ButtonR2.pressed(outtake_pressed);
+
+    Controller.ButtonA.pressed(loader_controller);
 }
 
 
 
 int main() {
     Competition.bStopTasksBetweenModes = true;
-    Competition.drivercontrol(userControl);
     Competition.autonomous(autonomousControl);
+     Competition.drivercontrol(userControl);
 
 }

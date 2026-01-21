@@ -36,3 +36,5 @@ extern void odom_telemetry();
 
 extern void print_odom_pos();
 
+extern void odom_thread();
+
