@@ -125,8 +125,7 @@ void sawp(){
 
     set_pose(0,0,0);
     
-    drive_to_point(80, 30, 50, 6, 0.8, 0, 0.45, 0, 0.1, 90, 0, 90, 10, 150);
-    drive_straight(80,80,180,10,2,4.0,100,0,0,0.8,0,0,150);
+    drive_to_point(60, 50, 50, 6, 0.8, 0, 0.45, 0, 0.1, 90, 0, 90, 10, 150);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);
