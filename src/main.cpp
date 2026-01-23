@@ -23,7 +23,8 @@ void autonomousControl(){
     //thread telemetry(odom_telemetry);
     //test_routine();
     // routine_left();
-    routine_right();
+    // routine_right();
+    auton_skills();
 }
 
 void userControl(){

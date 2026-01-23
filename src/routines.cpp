@@ -50,6 +50,8 @@ void routine_right(){
     drive_to_point(7,40,5,8,0.1,0,0.45,0,0.1,50,0,50,3,200);
      print_odom_pos();
 
+    vex::task::sleep(200);
+
     turn_to_point(24,19,5,3,0.53,0.1,0.175,45,0,200);
     print_odom_pos();
 
@@ -71,10 +73,10 @@ void routine_right(){
     loader.set(UNLOAD);
 
     high_goal_aligner.set(ALIGN);
-    main_intake.spin(reverse,20,pct);
+    main_intake.spin(reverse,25,pct);
 
 
-    drive_to_point_reverse_with_heading(25,40,0,1.5,8,0.8,0,0.45,0,0.1,45,0,15,2,200);
+    drive_to_point_reverse_with_heading(25,40,0,1.5,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
      print_odom_pos();
 
 
@@ -162,3 +164,88 @@ void routine_left(){
      printf("final time:%f\n",final_time);
 
 } 
+
+void auton_skills(){
+while(inertial_sensor.isCalibrating())
+
+        vex::task::sleep(10);
+    printf("inertial sensor calibrated\n");
+    master_timer.clear();
+    inertial_sensor.resetHeading();
+
+    odom_setup(-2.8,7.95,2.75,2.0,1.0/1.0);
+
+    thread odometry(odom_thread);
+    vex::task::sleep(100);
+
+    set_pose(0,0,90);
+
+    loader.set(LOAD);
+    drive_to_point(47,0, 6,6,0,0,0.45,0,0.1,40,0,50,3,200);
+    print_odom_pos();
+
+    main_intake.spin(fwd,100,pct);
+    final_intake_stage.spin(fwd,100,pct);
+    inertial_turn(45,180,3,0.45,0,0.1,4,150,200);
+
+    drive_straight(40,30,180,16,2,3,8,0.8,0,0.45,0,0.1,200);
+    print_odom_pos();
+
+    vex::task::sleep(1500);
+
+    drive_to_point_reverse_with_heading(47,3,0,3,8,0.8,0,0.45,0,0.1,20,0,15,2,200);
+    print_odom_pos();
+
+    loader.set(UNLOAD);
+
+    high_goal_aligner.set(ALIGN);
+    main_intake.spin(reverse,25,pct);
+
+
+    drive_to_point_reverse_with_heading(47,30,0,1.5,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
+    print_odom_pos();
+
+    main_intake.spin(fwd,100,pct);
+    final_intake_stage.spin(fwd,100,pct);
+    intermediate_intake_stage.spin(reverse,100,pct);
+
+    vex::task::sleep(4000);
+
+    intermediate_intake_stage.stop(coast);
+    main_intake.stop(coast);
+    final_intake_stage.stop(coast);
+    
+    drive_to_point_with_heading(58,1,180,4,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
+    print_odom_pos();
+
+
+
+    descorer.set(DESCORE);
+    high_goal_aligner.set(UNALIGN);
+
+    inertial_turn(45,0,3,0.45,0,0.1,4,150,200);
+
+
+    drive_to_point_with_heading(62,72,0,8,8,0.8,0,0.45,0,0.1,45,0,15,2,200);
+    print_odom_pos();
+
+    drive_to_point_with_heading(53,80,0,8,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
+    print_odom_pos();
+
+    inertial_turn(45,0,3,0.45,0,0.1,4,150,200);
+
+    main_intake.spin(fwd,100,pct);
+    final_intake_stage.spin(fwd,100,pct);
+    loader.set(LOAD);
+
+    vex::task::sleep(250);
+
+    drive_straight(40,30,0,20,2,4,8,0.8,0,0.45,0,0.1,200);
+    print_odom_pos();
+
+    vex::task::sleep(4000);
+
+    
+    float final_time = master_timer.time(seconds);
+    printf("final time:%f\n",final_time);
+}
