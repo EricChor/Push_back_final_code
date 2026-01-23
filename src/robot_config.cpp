@@ -25,9 +25,9 @@ motor left_rear_top_motor(PORT20, ratio6_1,false);
 // motor right_front_motor(PORT17, ratio6_1,false);
 // motor right_rear_bottom_motor (PORT13, ratio6_1,false);
 // motor right_rear_top_motor(PORT14, ratio6_1, true);
-motor right_front_motor(PORT17, ratio6_1,false);
-motor right_rear_bottom_motor (PORT13, ratio6_1,false);
-motor right_rear_top_motor(PORT14, ratio6_1, true);
+motor right_front_motor(PORT1, ratio6_1,false);
+motor right_rear_bottom_motor (PORT9, ratio6_1,false);
+motor right_rear_top_motor(PORT10, ratio6_1, true);
 
 //drivebase_motor_groups
 motor_group left_drive(left_front_motor,left_rear_bottom_motor,left_rear_top_motor);

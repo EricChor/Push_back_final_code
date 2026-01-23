@@ -23,7 +23,8 @@ void autonomousControl(){
     Competition.bStopTasksBetweenModes = true;
     // left_side();
     // right_side();
-    sawp();
+    left_descore();
+    right_descore();
 }
 
 void userControl(){
