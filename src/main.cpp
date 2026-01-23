@@ -27,6 +27,10 @@ void autonomousControl(){
 }
 
 void userControl(){
+
+    while(inertial_sensor.isCalibrating())
+
+        vex::task::sleep(10);
     thread arcade(arcade_drive);
 
     odom_setup(-2.8,7.95,2.75,2.0,1.0/1.0);
