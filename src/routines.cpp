@@ -40,72 +40,75 @@ void routine_right(){
 
     set_pose(0,0,0);
 
-    drive_to_point(3,24,3,8,0.8,0,0.45,0,0.1,45,25,50,3,200);
-     print_odom_pos();
+    drive_to_point(0,60,150,8,0.8,0,0.45,0,0.1,45,0,50,3,200);
+    // print_odom_pos();
 
-    main_intake.spin(fwd,100,pct);
-    final_intake_stage.spin(fwd,100,pct);
+    // drive_to_point(3,24,3,8,0.8,0,0.45,0,0.1,45,25,50,3,200);
+    //  print_odom_pos();
 
-    vex::task::sleep(100);
+    // main_intake.spin(fwd,100,pct);
+    // final_intake_stage.spin(fwd,100,pct);
 
-    drive_to_point(10,40,3,8,0.8,0,0.45,0,0.1,35,0,50,3,200);
-     print_odom_pos();
+    // vex::task::sleep(100);
 
-    vex::task::sleep(100);
+    // drive_to_point(10,40,3,8,0.8,0,0.45,0,0.1,35,0,50,3,200);
+    //  print_odom_pos();
 
-    turn_to_point(30,12.5,4,3,0.53,0,0.175,45,150,200);
-    print_odom_pos();
+    // vex::task::sleep(100);
 
-    loader.set(LOAD);
+    // turn_to_point(30,12.5,4,3,0.53,0,0.175,45,150,200);
+    // print_odom_pos();
 
-    drive_to_point(30,30, 3,8,0.8,0,0.45,0,0.1,45,0,50,3,200);
-     print_odom_pos();
+    // loader.set(LOAD);
 
-    inertial_turn(45,180,3,0.45,0,0.1,4,150,200);
+    // drive_to_point(30,30, 3,8,0.8,0,0.45,0,0.1,45,0,50,3,200);
+    //  print_odom_pos();
 
-    drive_straight(40,30,180,12,2,4,8,0.8,0,0.45,0,0.1,200);
-    print_odom_pos();
+    // inertial_turn(45,180,3,0.45,0,0.1,4,150,200);
 
-    vex::task::sleep(100);
+    // drive_straight(40,30,180,12,2,4,8,0.8,0,0.45,0,0.1,200);
+    // print_odom_pos();
 
-    drive_to_point_reverse_with_heading(37,35,0,3,8,0.8,0,0.45,0,0.1,20,0,15,2,200);
-    print_odom_pos();
+    // vex::task::sleep(100);
 
-    loader.set(UNLOAD);
+    // drive_to_point_reverse_with_heading(37,35,0,3,8,0.8,0,0.45,0,0.1,20,0,15,2,200);
+    // print_odom_pos();
 
-    high_goal_aligner.set(ALIGN);
-    main_intake.spin(reverse,10,pct);
+    // loader.set(UNLOAD);
 
-
-    drive_to_point_reverse_with_heading(37,50,0,1,8,0.8,0,0.45,0,0.1,35,0,15,2,200);
-     print_odom_pos();
-
-
-    main_intake.spin(fwd,100,pct);
-    intermediate_intake_stage.spin(reverse,100,pct);
-
-    vex::task::sleep(2000);
-
-    intermediate_intake_stage.stop(coast);
+    // high_goal_aligner.set(ALIGN);
+    // main_intake.spin(reverse,10,pct);
 
 
+    // drive_to_point_reverse_with_heading(37,50,0,1,8,0.8,0,0.45,0,0.1,35,0,15,2,200);
+    //  print_odom_pos();
 
 
-     descorer.set(DESCORE);
-    high_goal_aligner.set(UNALIGN);
-     drive_straight(25,30,180,12,2,4,8,0.8,0,0.45,0,0.1,200);
-    print_odom_pos();
+    // main_intake.spin(fwd,100,pct);
+    // intermediate_intake_stage.spin(reverse,100,pct);
 
-    drive_to_point_reverse_with_heading(44,43,0,1,8,0.8,0,0.45,0,0.1,35,0,50,2,200);
-     print_odom_pos();
+    // vex::task::sleep(2000);
 
-    drive_to_point_reverse_with_heading(45,48,0,1,8,0.8,0,0.45,0,0.1,35,0,50,4,200);
-     print_odom_pos();
+    // intermediate_intake_stage.stop(coast);
 
-    descorer.set(UNDESCORE);
+
+
+
+    //  descorer.set(DESCORE);
+    // high_goal_aligner.set(UNALIGN);
+    //  drive_straight(25,30,180,12,2,4,8,0.8,0,0.45,0,0.1,200);
+    // print_odom_pos();
+
+    // drive_to_point_reverse_with_heading(44,43,0,1,8,0.8,0,0.45,0,0.1,35,0,50,2,200);
+    //  print_odom_pos();
+
+    // drive_to_point_reverse_with_heading(45,48,0,1,8,0.8,0,0.45,0,0.1,35,0,50,4,200);
+    //  print_odom_pos();
+
+    // descorer.set(UNDESCORE);
     
-    drive_straight(40,30,180,-12,2,4,8,0.8,0,0.45,0,0.1,200);
-    print_odom_pos();
+    // drive_straight(40,30,180,-12,2,4,8,0.8,0,0.45,0,0.1,200);
+    // print_odom_pos();
 
       float final_time = master_timer.time(seconds);
      printf("final time:%f\n",final_time);

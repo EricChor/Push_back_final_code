@@ -29,7 +29,7 @@ void autonomousControl(){
 void userControl(){
     thread arcade(arcade_drive);
 
-    odom_setup(-2.6,7.95,2.75,2.0,1.0/1.0);
+    odom_setup(-2.8,7.95,2.75,2.0,1.0/1.0);
 
     thread odometry(odom_thread);
     thread telemetry(odom_telemetry);
