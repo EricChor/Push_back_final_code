@@ -74,97 +74,87 @@ void set_pose(double initial_x_pos,double initial_y_pos,double starting_theta){
 
 // float lateral_accumulator = 0;
 
+double theta_ccw_rad = 0.0;
+double prev_theta_ccw_rad = 0.0;
+
 void update_pose() {
-    // =========================
     // Read sensors
-    // =========================
-    vertical_encoder_pos = vertical_tracking.position(degrees);
-    lateral_encoder_pos  = lateral_tracking.position(degrees);
-    theta_pos            = inertial_sensor.heading(degrees);
+    vertical_encoder_pos = vertical_tracking.position(vex::degrees);
+    lateral_encoder_pos  = lateral_tracking.position(vex::degrees);
+    theta_pos            = inertial_sensor.heading(vex::degrees); // CW-positive, 0..360
 
-    // =========================
-    // Compute raw deltas (deg)
-    // =========================
-    double dVert_deg  = vertical_encoder_pos - prev_vertical_encoder_pos;
-    double dLat_deg   = lateral_encoder_pos  - prev_lateral_encoder_pos;
-    double dTheta_deg = theta_pos            - prev_theta_pos;
+    // Encoder deltas (deg)
+    double dVert_deg = vertical_encoder_pos - prev_vertical_encoder_pos;
+    double dLat_deg  = lateral_encoder_pos  - prev_lateral_encoder_pos;
 
-    // Handle IMU wraparound (359 -> 0)
-    if (fabs(dTheta_deg) > 180.0) {
-        if (dTheta_deg > 0) dTheta_deg -= 360.0;
-        else                dTheta_deg += 360.0;
+    // IMU delta (deg), CW-positive
+    double dTheta_cw_deg = theta_pos - prev_theta_pos;
+    if (fabs(dTheta_cw_deg) > 180.0) {
+        if (dTheta_cw_deg > 0) dTheta_cw_deg -= 360.0;
+        else                   dTheta_cw_deg += 360.0;
     }
 
-    // =========================
-    // Convert to linear inches and radians
-    // =========================
-    // Wheel radii are (diameter / 2)
+    // Convert encoder deltas to inches
     double dVert_in = degToRad(dVert_deg) * (vertical_wheel_diameter / 2.0);
     double dLat_in  = degToRad(dLat_deg)  * (lateral_wheel_diameter  / 2.0);
-    double dTheta   = degToRad(dTheta_deg); // radians
 
-    // =========================
-    // Noise gates / thresholds
-    // =========================
-    const double theta_eps = 1e-4;   // rad, small-angle threshold (tune)
-    const double move_eps  = 1e-3;   // in,  "not moving" threshold (tune)
+    // Convert CW-positive delta to CCW-positive radians for the math
+    double dTheta = -degToRad(dTheta_cw_deg);   // IMPORTANT: negate
 
-    // If wheels say we didn't move, don't allow IMU jitter to create translation.
-    // (Option A: skip translation; Option B: skip entire update; choose one.)
+    // Build a CCW-positive heading for transform (store and integrate it)
+    // This avoids having to convert absolute 0..360 headings each time.
+    theta_ccw_rad += dTheta; // theta_ccw_rad is a persistent state variable (global/static)
+
+    const double theta_eps = 1e-4;  // rad (tune)
+    const double move_eps  = 1e-3;  // inches (tune)
+
+    // Stationary gate: if wheels didn’t move, don’t let IMU jitter create translation
     if (fabs(dVert_in) < move_eps && fabs(dLat_in) < move_eps) {
-        // Update stored previous values and return
         prev_vertical_encoder_pos = vertical_encoder_pos;
         prev_lateral_encoder_pos  = lateral_encoder_pos;
         prev_theta_pos            = theta_pos;
-
         vex::task::sleep(10);
         return;
     }
 
-    // =========================
-    // Compute local deltas (robot frame)
-    // Using stable small-angle limit as dTheta -> 0:
-    // local ≈ Δencoder - offset * Δθ
-    // =========================
-    double local_delta_x = 0.0;
-    double local_delta_y = 0.0;
+    // Local deltas (robot frame)
+    double local_dx = 0.0;
+    double local_dy = 0.0;
 
     if (fabs(dTheta) < theta_eps) {
-        // Small-angle stable form (prevents division by tiny dTheta)
-        local_delta_y = dVert_in - vertical_encoder_distance_from_arc_center * dTheta;
-        local_delta_x = dLat_in  - lateral_encoder_distance_from_arc_center  * dTheta;
+        // Small-angle stable limit:
+        // local ≈ Δencoder - offset * Δθ
+        local_dy = dVert_in - vertical_encoder_distance_from_arc_center * dTheta;
+        local_dx = dLat_in  - lateral_encoder_distance_from_arc_center  * dTheta;
     } else {
-        // General arc/chord model
+        // Arc/chord model
         double s = 2.0 * sin(dTheta / 2.0);
 
-        double arc_radius_vert = (dVert_in / dTheta) - vertical_encoder_distance_from_arc_center;
-        double arc_radius_lat  = (dLat_in  / dTheta) - lateral_encoder_distance_from_arc_center;
+        double rVert = (dVert_in / dTheta) - vertical_encoder_distance_from_arc_center;
+        double rLat  = (dLat_in  / dTheta) - lateral_encoder_distance_from_arc_center;
 
-        local_delta_y = arc_radius_vert * s;
-        local_delta_x = arc_radius_lat  * s;
+        local_dy = rVert * s;
+        local_dx = rLat  * s;
     }
 
-    // =========================
-    // Transform to global frame
-    // Use average heading over the interval
-    // =========================
-    double transform_theta = -1.0 * (degToRad(prev_theta_pos) + dTheta / 2.0);
+    // Transform local -> global using average heading over the interval (CCW-positive)
+    double transform_theta = -(prev_theta_ccw_rad + dTheta / 2.0);
 
-    double global_delta_x = local_delta_x * cos(transform_theta) - local_delta_y * sin(transform_theta);
-    double global_delta_y = local_delta_x * sin(transform_theta) + local_delta_y * cos(transform_theta);
+    double global_dx = local_dx * cos(transform_theta) - local_dy * sin(transform_theta);
+    double global_dy = local_dx * sin(transform_theta) + local_dy * cos(transform_theta);
 
-    x_pos += global_delta_x;
-    y_pos += global_delta_y;
+    x_pos += global_dx;
+    y_pos += global_dy;
 
-    // =========================
-    // Update previous values
-    // =========================
+    // Update previous
     prev_vertical_encoder_pos = vertical_encoder_pos;
     prev_lateral_encoder_pos  = lateral_encoder_pos;
     prev_theta_pos            = theta_pos;
 
+    prev_theta_ccw_rad = theta_ccw_rad;  // keep prev in sync (persistent)
     vex::task::sleep(10);
 }
+
 
 
 void odom_thread(){
