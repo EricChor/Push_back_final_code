@@ -256,6 +256,7 @@ void test_routine(){
     master_timer.clear();
     inertial_sensor.resetHeading();
 
+    wall_alignment(30,30,45,24,0.5,5,4,8, 0.8, 0, 1, 0, 200);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);
