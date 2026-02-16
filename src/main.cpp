@@ -23,26 +23,31 @@ void autonomousControl(){
     Competition.bStopTasksBetweenModes = true;
     // left_side();
     // right_side();
-    left_descore();
-    right_descore();
+    // left_descore_only();
+    // right_descore();
+    // square();
+    sawp();
+    // skills_auton();
 }
 
 void userControl(){
     Competition.bStopTasksBetweenModes = true;
     thread arcade(arcade_drive);
     thread loader(loader_pressed);
-    thread descoring(descorer_pressed);
+    // thread descoring(descorer_pressed);
+
+
 
     color_sorting_sensor.setLightPower(100,pct);
     color_sorting_sensor.setLight(ledState::on);
 
     Controller.ButtonA.pressed(aligner_pressed);
-    Controller.ButtonLeft.pressed(descorer_pressed);
+    Controller.ButtonX.pressed(descorer_pressed);
     Controller.ButtonL1.pressed(score_high_pressed);
     Controller.ButtonL2.pressed(score_low_pressed);
     Controller.ButtonR1.pressed(intake_pressed);
     Controller.ButtonR2.pressed(outtake_pressed);
-    Controller.ButtonRight.pressed(loader_pressed);
+    Controller.ButtonB.pressed(loader_pressed);
 }
 
 

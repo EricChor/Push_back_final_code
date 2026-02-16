@@ -61,8 +61,8 @@ void odom_setup(double vertical_encoder_distance_from_center,double lateral_enco
 
     // left_middle_motor.resetPosition();     //reset tracking encoders
     inertial_sensor.resetHeading();        //reset inertial sensor
-    // vertical_tracking.resetPosition();
-    left_front_motor.resetPosition();
+    vertical_tracking.resetPosition();
+    // left_front_motor.resetPosition();
     lateral_tracking.resetPosition();
 }
 
@@ -74,72 +74,87 @@ void set_pose(double initial_x_pos,double initial_y_pos,double starting_theta){
 }
 
 // float lateral_accumulator = 0;
+double theta_ccw_rad = 0.0;
+double prev_theta_ccw_rad = 0.0;
 
-void update_pose(){
-    // vertical_encoder_pos = vertical_tracking.position(degrees); //update vertical encoder position
-    vertical_encoder_pos = left_front_motor.position(degrees);
-    lateral_encoder_pos = lateral_tracking.position(degrees);
-    //printf("vertical_encoder_pos:%f\n",vertical_encoder_pos);                             //update lateral encoder position (need to change, no lateral encoder)
-    theta_pos = inertial_sensor.heading(degrees);          //update inertial sensor position
-    //printf("theta_pos:%f\n",theta_pos);
+void update_pose() {
+    // Read sensors
+    vertical_encoder_pos = vertical_tracking.position(vex::degrees);
+    lateral_encoder_pos  = lateral_tracking.position(vex::degrees);
+    theta_pos            = inertial_sensor.heading(vex::degrees); // CW-positive, 0..360
 
-    delta_vertical_encoder_pos = vertical_encoder_pos - prev_vertical_encoder_pos; //calculate change in vertical encoder position
-    //printf("delta_vertical_encoder:%f\n",delta_vertical_encoder_pos);
-    // delta_lateral_encoder_pos  = lateral_encoder_pos - prev_lateral_encoder_pos;   //calculate change in lateral encoder position
-    delta_lateral_encoder_pos = 0;
-    delta_theta = theta_pos - prev_theta_pos;                                      //calculate change in inertial sensor position
-    //printf("%f:%f:delta theta:%f\n",theta_pos,prev_theta_pos,delta_theta);
+    // Encoder deltas (deg)
+    double dVert_deg = vertical_encoder_pos - prev_vertical_encoder_pos;
+    double dLat_deg  = lateral_encoder_pos  - prev_lateral_encoder_pos;
 
-    //printf("gear ratio:%f\n",drivebase_gear_ratio);
-    delta_vertical_encoder_pos = degToRad(delta_vertical_encoder_pos) * (vertical_wheel_diameter/2); //convert angle to linear distance
-    
-    //delta_vertical_encoder_pos = 3.25 * M_PI * delta_vertical_encoder_pos * 3/5; //convert angle to linear distance
-    //printf("drivebase gear ratio:%f\n",drivebase_gear_ratio);
-
-    //delta_vertical_encoder_pos = wheel_diameter * M_PI * delta_vertical_encoder_pos * drivebase_gear_ratio; //convert angle to linear distance
-    delta_lateral_encoder_pos = degToRad(delta_lateral_encoder_pos) * (lateral_wheel_diameter/2);
-    if(delta_theta == 0){ //maybe try fabs(delta_theta) < epsilon, need to see what noise values there are first
-        local_delta_y = delta_vertical_encoder_pos;
-        local_delta_x = delta_lateral_encoder_pos;
-    } else {
-        arc_radius = delta_vertical_encoder_pos / degToRad(delta_theta) - vertical_encoder_distance_from_arc_center; //calculates the radius one side of the turning arc (assumes encoder is on left)
-        lateral_arc_radius = delta_lateral_encoder_pos / degToRad(delta_theta) - lateral_encoder_distance_from_arc_center;//calculates the radius of the lateral turning arc
-    
-        if(delta_vertical_encoder_pos == 0) //accounts for noise from the inertial sensor when robot is not moving
-            arc_radius = 0;
-        if(delta_lateral_encoder_pos == 0)
-            lateral_arc_radius = 0;
-
-
-    //printf("arc_radius:%f\n",arc_radius);
-
-    //printf("vert:%f horz:%f\n",arc_radius,lateral_arc_radius);
-
-        local_delta_y = 2 * arc_radius * sin(degToRad(delta_theta) / 2);          //calculates the y distance in the rotated axes using the chord length formula
-        local_delta_x = 2 * lateral_arc_radius * sin(degToRad(delta_theta) / 2);  //need lateral tracking wheel
+    // IMU delta (deg), CW-positive
+    double dTheta_cw_deg = theta_pos - prev_theta_pos;
+    if (fabs(dTheta_cw_deg) > 180.0) {
+        if (dTheta_cw_deg > 0) dTheta_cw_deg -= 360.0;
+        else                   dTheta_cw_deg += 360.0;
     }
 
-    //printf("arc_radius:%f\n",arc_radius);
-    //printf("l_delta_y:%f l_delta_x:%f\n",local_delta_y,local_delta_x);
-    //(M_PI/2)-atan((sin(degToRad(delta_theta))/(1-cos(degToRad(delta_theta)) = delta_theta / 2
-    transform_theta = -1*(degToRad(prev_theta_pos) + (degToRad(delta_theta)/2)); //calculates the angle for the linear transform
+    // Convert encoder deltas to inches
+    double dVert_in = degToRad(dVert_deg) * (vertical_wheel_diameter / 2.0);
+    double dLat_in  = degToRad(dLat_deg)  * (lateral_wheel_diameter  / 2.0);
 
-    global_delta_x = local_delta_x * cos(transform_theta) - local_delta_y * sin(transform_theta);                   //calculates dx/dt in the global coordinates from linear transform
-    global_delta_y = local_delta_x * sin(transform_theta) + local_delta_y * cos(transform_theta);                   //calculates dy/dt in the global coordinates from linear transform
-    
-    //printf("local y:%f local x: %f\n",global_delta_y,global_delta_x);
-    
-    x_pos += global_delta_x; //update global x pos
-    y_pos += global_delta_y; //update global y pos
-    //printf("X:%f Y:%f θ:%f\n",x_pos,y_pos,theta_pos);
-    //update
+    // Convert CW-positive delta to CCW-positive radians for the math
+    double dTheta = -degToRad(dTheta_cw_deg);   // IMPORTANT: negate
 
-    prev_vertical_encoder_pos = vertical_encoder_pos; //update previous vertical encoder pos
-    prev_lateral_encoder_pos  = lateral_encoder_pos;  //update previous lateral encoder pos
-    prev_theta_pos = theta_pos;                       //update previous theta pos
-    // lateral_accumulator += delta_lateral_encoder_pos;
+    // Build a CCW-positive heading for transform (store and integrate it)
+    // This avoids having to convert absolute 0..360 headings each time.
+    theta_ccw_rad += dTheta; // theta_ccw_rad is a persistent state variable (global/static)
+
+    const double theta_eps = 1e-4;  // rad (tune)
+    const double move_eps  = 1e-3;  // inches (tune)
+
+    // Stationary gate: if wheels didn’t move, don’t let IMU jitter create translation
+    if (fabs(dVert_in) < move_eps && fabs(dLat_in) < move_eps) {
+        prev_vertical_encoder_pos = vertical_encoder_pos;
+        prev_lateral_encoder_pos  = lateral_encoder_pos;
+        prev_theta_pos            = theta_pos;
+        vex::task::sleep(10);
+        return;
+    }
+
+    // Local deltas (robot frame)
+    double local_dx = 0.0;
+    double local_dy = 0.0;
+
+    if (fabs(dTheta) < theta_eps) {
+        // Small-angle stable limit:
+        // local ≈ Δencoder - offset * Δθ
+        local_dy = dVert_in - vertical_encoder_distance_from_arc_center * dTheta;
+        local_dx = dLat_in  - lateral_encoder_distance_from_arc_center  * dTheta;
+    } else {
+        // Arc/chord model
+        double s = 2.0 * sin(dTheta / 2.0);
+
+        double rVert = (dVert_in / dTheta) - vertical_encoder_distance_from_arc_center;
+        double rLat  = (dLat_in  / dTheta) - lateral_encoder_distance_from_arc_center;
+
+        local_dy = rVert * s;
+        local_dx = rLat  * s;
+    }
+
+    // Transform local -> global using average heading over the interval (CCW-positive)
+    double transform_theta = -(prev_theta_ccw_rad + dTheta / 2.0);
+
+    double global_dx = local_dx * cos(transform_theta) - local_dy * sin(transform_theta);
+    double global_dy = local_dx * sin(transform_theta) + local_dy * cos(transform_theta);
+
+    x_pos -= global_dx;
+    y_pos += global_dy;
+
+    // Update previous
+    prev_vertical_encoder_pos = vertical_encoder_pos;
+    prev_lateral_encoder_pos  = lateral_encoder_pos;
+    prev_theta_pos            = theta_pos;
+
+    prev_theta_ccw_rad = theta_ccw_rad;  // keep prev in sync (persistent)
     vex::task::sleep(10);
 }
+
 
 void odom_thread(){
     while(true)

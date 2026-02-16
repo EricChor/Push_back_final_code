@@ -43,9 +43,9 @@ extern digital_out high_goal_aligner;
 extern optical color_sorting_sensor;
 
 enum alliance_color{
-    RED,
-    BLUE,
-    NEUTRAL
+    RED, //0
+    BLUE, //1
+    NEUTRAL //2
 };
 
 extern alliance_color current_alliance_color;
@@ -53,3 +53,5 @@ extern alliance_color current_alliance_color;
 extern rotation lateral_tracking;
 
 extern rotation vertical_tracking;
+
+extern distance massive_distance_sensor;

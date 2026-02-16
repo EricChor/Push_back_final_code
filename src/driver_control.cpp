@@ -53,10 +53,17 @@ void outtake_pressed(){
 void score_high_pressed(){
     if(current_intake_state != SCORE_HIGH){
         current_intake_state = SCORE_HIGH;
-    } else {
-        current_intake_state = STOP;
     }
-    intake_controller();
+    stop_color_sorting();
+    main_intake.spin(fwd,100,pct);
+    intermediate_intake_stage.spin(reverse,100,pct);
+    final_intake_stage.spin(fwd,100,pct);
+    while(Controller.ButtonL1.pressing()){
+        vex::task::sleep(10);
+    }
+    main_intake.stop(coast);
+    intermediate_intake_stage.stop(coast);
+    final_intake_stage.stop(coast);
 }
 
 void score_low_pressed(){
@@ -107,8 +114,8 @@ void intake_controller(){
         case OUTTAKE:{
             stop_color_sorting();
             main_intake.spin(reverse,100,pct);
-            intermediate_intake_stage.stop(coast);
-            final_intake_stage.spin(fwd,100,pct);
+            intermediate_intake_stage.spin(fwd, 100, pct);
+            final_intake_stage.spin(reverse,100,pct);
             break;
         }
         
@@ -149,6 +156,7 @@ void loader_pressed(){
     } else {
         loader_state = true;
         loader.set(LOAD);
+        high_goal_aligner.set(UNALIGN);
     }
 }
 
@@ -173,5 +181,9 @@ void aligner_pressed(){
     } else {
         current_aligner_state = ALIGN;
         high_goal_aligner.set(ALIGN);
+        loader_state = UNLOAD;
+        loader.set(UNLOAD);
     }
+    
 }
+

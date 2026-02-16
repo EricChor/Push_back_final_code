@@ -57,6 +57,8 @@ digital_out high_goal_aligner(Brain.ThreeWirePort.H);
 
 alliance_color current_alliance_color = BLUE;
 
-rotation lateral_tracking(PORT19);
+rotation lateral_tracking(PORT18);
 
-rotation vertical_tracking(PORT19);
+rotation vertical_tracking(PORT17,true);
+
+distance massive_distance_sensor(PORT2);

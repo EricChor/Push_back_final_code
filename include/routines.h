@@ -2,10 +2,14 @@
 
 extern void test_routine();
 
-extern void left_side(); //slot 1
+extern void left_side(); //past: slot 1 = BLUE ALLIANCE slot 2 = RED ALLIANCE current: slot 1
 
-extern void right_side(); //slot 2
+extern void right_side(); //slot 3 = BLUE ALLIANCE slot 4 = RED ALLIANCE current: slot 2
 
-extern void left_descore(); //slot 3
+extern void sawp(); //slot 5 current: slot 3
 
-extern void right_descore(); //slot 4
+extern void left_descore_only(); //current: slot 4
+
+extern void skills_auton(); // slot 6
+
+extern void square(); // slot 7
