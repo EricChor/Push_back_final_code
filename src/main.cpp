@@ -26,8 +26,10 @@ void autonomousControl(){
     // left_descore_only();
     // right_descore();
     // square();
-    sawp();
+    // sawp();
     // skills_auton();
+    // test_routine();
+    right_alignment();
 }
 
 void userControl(){

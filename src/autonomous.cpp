@@ -21,7 +21,7 @@ void inertial_turn(int max_speed, float target_heading, float max_time, float kP
     while(true){
         current_heading = inertial_sensor.heading();
         error = target_heading - current_heading;
-        printf("error:%f\n",error);
+        // printf("error:%f\n",error);
         if(fabs(error) > 180 ){
             if(error > 0){
                 error = error - 360;
@@ -410,6 +410,7 @@ void wall_alignment(int max_linear_speed, int max_angular_speed, float target_he
 
         linear_error = cos(degToRad(angular_error)) * current_position - target_distance;
 
+        std::cout << "Linear error: " << linear_error << std::endl;
         linear_derivative_error = linear_error - linear_previous_error;
 
         linear_previous_error = linear_error;
@@ -447,6 +448,7 @@ void wall_alignment(int max_linear_speed, int max_angular_speed, float target_he
         left_drive_linear_velocity = linear_kP * linear_error + linear_kI * linear_integral_error + linear_kD * linear_derivative_error;
         right_drive_linear_velocity = linear_kP * linear_error + linear_kI * linear_integral_error + linear_kD * linear_derivative_error;
 
+        // std::cout << "Linear velocity: " << left_drive_linear_velocity << std::endl;
         if(((left_drive_linear_velocity) > (prev_left_drive_linear_velocity + max_accel))&&(max_accel != 0)){
             left_drive_linear_velocity = prev_left_drive_linear_velocity + max_accel;
             right_drive_linear_velocity = prev_right_drive_linear_velocity + max_accel;

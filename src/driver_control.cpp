@@ -136,7 +136,7 @@ void intake_controller(){
             stop_color_sorting();
             main_intake.spin(fwd,100,pct);
             intermediate_intake_stage.spin(reverse,100,pct);
-            final_intake_stage.spin(reverse,100,pct);
+            final_intake_stage.spin(reverse,30,pct);
             break;
             while(Controller.ButtonL2.pressing()){
                 vex::task::sleep(10);
