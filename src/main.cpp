@@ -21,7 +21,7 @@ competition Competition;
 
 void autonomousControl(){
     Competition.bStopTasksBetweenModes = true;
-    // left_side();
+    left_side();
     // right_side();
     // left_descore_only();
     // right_descore();
@@ -29,7 +29,7 @@ void autonomousControl(){
     // sawp();
     // skills_auton();
     // test_routine();
-    right_alignment();
+    // right_alignment();
 }
 
 void userControl(){

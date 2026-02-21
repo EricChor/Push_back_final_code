@@ -448,6 +448,8 @@ void wall_alignment(int max_linear_speed, int max_angular_speed, float target_he
         left_drive_linear_velocity = linear_kP * linear_error + linear_kI * linear_integral_error + linear_kD * linear_derivative_error;
         right_drive_linear_velocity = linear_kP * linear_error + linear_kI * linear_integral_error + linear_kD * linear_derivative_error;
 
+        left_drive_linear_velocity = -1 * left_drive_linear_velocity;
+        right_drive_linear_velocity = -1 * right_drive_linear_velocity;
         // std::cout << "Linear velocity: " << left_drive_linear_velocity << std::endl;
         if(((left_drive_linear_velocity) > (prev_left_drive_linear_velocity + max_accel))&&(max_accel != 0)){
             left_drive_linear_velocity = prev_left_drive_linear_velocity + max_accel;
