@@ -242,11 +242,11 @@ void skills_auton(){
     intermediate_intake_stage.stop(coast);
     loader.set(LOAD);
     high_goal_aligner.set(UNALIGN);
-    drive_straight(50,50,0,100,2,2.5,8,0,0,0.8,0,0,150);
-    drive_straight(40,40,0,-5,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(50,50,0,32,2,2.5,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,0,-2,2,4.0,8,0,0,0.8,0,0,150);
     vex::task::sleep(300);   
-    drive_straight(40,40,0,100,2,1.0,8,0,0,0.8,0,0,150);
-    drive_straight(40,40,0,-5,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,0,32,2,1.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,0,-2,2,4.0,8,0,0,0.8,0,0,150);
     loader.set(UNLOAD);
     high_goal_aligner.set(ALIGN);    
     drive_straight(70,70,5,-48,2,1.5,8,0,0,0.8,0,0,150);
@@ -259,11 +259,11 @@ void skills_auton(){
     wall_alignment(40,40,90,19,4,9999,4,0.1, 0.8, 0.8, 0, 0, 200);
     loader.set(LOAD);
     inertial_turn(70,0,10,0.5,0,0,8,100,30);
-    drive_straight(50,50,0,100,2,2.5,8,0,0,0.8,0,0,150);
-    drive_straight(70,70,0,-5,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(50,50,0,32,2,2.5,8,0,0,0.8,0,0,150);
+    drive_straight(70,70,0,-2,2,1.0,8,0,0,0.8,0,0,150);
     vex::task::sleep(300);   
-    drive_straight(40,40,0,100,2,1.0,8,0,0,0.8,0,0,150);
-    drive_straight(70,70,0,-5,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,0,32,2,1.0,8,0,0,0.8,0,0,150);
+    drive_straight(70,70,0,-2,2,1.0,8,0,0,0.8,0,0,150);
     inertial_turn(70,90,10,0.5,0,0,8,100,30);
     wall_alignment(70,70,90,1,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);   
     loader.set(UNLOAD);
@@ -286,10 +286,10 @@ void skills_auton(){
     drive_straight(40,40,0,-5,2,4.0,8,0,0,0.8,0,0,150);
     inertial_turn(70,90,10,0.5,0,0,8,100,30);
     loader.set(UNLOAD);
-    wall_alignment(70,70,90,72,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
+    wall_alignment(70,70,90,72,0.5,5,4,0.1, 0.8, 1, 0, 0, 200);
     inertial_turn(70,180,10,0.5,0,0,8,100,30);
-    drive_straight(40,180,0,-10,2,4.0,8,0,0,0.8,0,0,150);
-    drive_straight(40,180,0,50,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,70,180,-10,2,4.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,70,180,50,2,4.0,8,0,0,0.8,0,0,150);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);
