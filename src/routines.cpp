@@ -50,7 +50,7 @@ void left_side(){
     high_goal_aligner.set(UNALIGN);
 
 
-    inertial_turn(70,90,10,0.5,0,0,4,100,30);
+    inertial_turn(70,90,10,0.5,0,0,4,100,200);
     wall_alignment(40,40,90,27.5,0.5,4,4,0.1, 0.8, 1, 0, 0, 200);
     inertial_turn(70,182,10,0.5,0,0,3,100,30);
     descorer.set(UNDESCORE);
