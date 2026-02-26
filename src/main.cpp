@@ -21,13 +21,13 @@ competition Competition;
 
 void autonomousControl(){
     Competition.bStopTasksBetweenModes = true;
-    // left_side();
+    left_side();
     // right_side();
     // left_descore_only();
     // right_descore();
     // square();
     // sawp();
-    skills_auton();
+    // skills_auton();
     // test_routine();
     // right_alignment();
 }

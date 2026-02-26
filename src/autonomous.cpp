@@ -561,3 +561,25 @@ void color_sorting_intake(){
         vex::task::sleep(10);
     }
 }
+
+void auto_unjam_intake(){
+    main_intake.spin(fwd,100,pct);
+    intermediate_intake_stage.stop(coast);
+    final_intake_stage.spin(fwd,100,pct);
+    vex::task::sleep(250);
+    while(true){
+        if(abs(main_intake.velocity(pct)) < 15){
+            main_intake.spin(reverse,100,pct);
+            vex::task::sleep(200);
+            main_intake.spin(fwd,100,pct);
+            vex::task::sleep(200);
+        }
+        vex::task::sleep(100);
+    }
+}
+
+void loader_setup(){
+    loader.set(LOAD);
+    vex::task::sleep(150);
+    loader.set(UNLOAD);
+}
