@@ -12,6 +12,8 @@ extern void left_descore_only(); //current: slot 4
 
 extern void skills_auton(); // slot 6 current: slot 5
 
+extern void asawp(); // current: slot 6
+
 
 extern void right_alignment();
 extern void square(); // slot 7

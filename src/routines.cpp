@@ -20,41 +20,38 @@ void left_side(){
     
     descorer.set(DESCORE);
     thread loader_thread(loader_setup);
-    // main_intake.spin(fwd,100, pct);
+    main_intake.spin(fwd,100, pct);
     thread main_intake(auto_unjam_intake);
     final_intake_stage.spin(fwd,100,pct);
     drive_to_point(-6, 40, 150, 8, 0.8, 0, 0.45, 0, 0.1, 60, 0, 60, 4, 200);
     loader.set(LOAD);
     print_odom_pos();
     inertial_turn(60,225,10,0.5,0.1,0.4,10,50,200);
-    drive_to_point_reverse_with_heading(7, 50,45, 1.0, 4, 0.8, 0, 0.45, 0, 0.3, 50, 0, 40, 6, 200);
+    drive_to_point_reverse_with_heading(5.5, 50,45, 1.0, 4, 0.8, 0, 0.45, 0, 0.3, 50, 0, 40, 6, 200);
     print_odom_pos();
     intermediate_intake_stage.spin(reverse,100,pct);
     final_intake_stage.spin(reverse,70,pct);
-    vex::task::sleep(1250);
+    vex::task::sleep(1000);
     intermediate_intake_stage.stop(coast);
     drive_to_point(-33, 18, 3, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 3, 200);
     inertial_turn(60,90,10,0.5,0,0,20,0,200);
-    wall_alignment(60,60,90,16.75,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);    
+    wall_alignment(60,60,90,16.25,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);    
     inertial_turn(60,180,10,0.5,0,0,20,100,30);
     final_intake_stage.spin(fwd,100,pct);
-
-    drive_straight(35,30,180,32,2,1,8,0,0,0.4,0,0,150);
+    drive_straight(45,40,184,40,2,1,8,0,0,0.4,0,0,150);
     drive_straight(40,40,180,-2,0.5,4.0,8,0,0,0.8,0,0,150);
     loader.set(UNLOAD);
     high_goal_aligner.set(ALIGN);    
-    drive_straight(50,70,180,-48,2,1.5,8,0,0,0.8,0,0,150);
+    drive_straight(50,70,183,-48,2,1.5,8,0,0,0.8,0,0,150);
     intermediate_intake_stage.spin(reverse, 100, pct);    
     vex::task::sleep(1000);
     intermediate_intake_stage.stop(coast);
     high_goal_aligner.set(UNALIGN);
-
-
     inertial_turn(70,90,10,0.5,0,0,4,100,30);
-    wall_alignment(40,40,90,27.5,0.5,4,4,0.1, 0.8, 1, 0, 0, 200);
-    inertial_turn(70,182,10,0.5,0,0,3,100,30);
+    wall_alignment(40,40,90,28,0.5,4,4,0.1, 0.8, 1, 0, 0, 200);
+    inertial_turn(70,182,10,0.5,0,0,3,100,200);
     descorer.set(UNDESCORE);
-    drive_straight(50,5,182,-25,2,0.8,8,0,0,0.8,0,0,150);
+    drive_straight(50,50,182,-25,2,0.8,8,0,0,0.8,0,0,150);
 
     
     // // drive_to_point(-40, -50, 4, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 3, 200);
@@ -142,30 +139,29 @@ void right_side(){
     loader.set(LOAD);
     print_odom_pos();
     inertial_turn(40,315,10,0.4,0.1,0,8,5,30);
-    drive_to_point_reverse_with_heading(32, 18,135, 5, 8, 0.8, 0, 0.45, 0, 0.1, 55, 0, 55, 6, 200);
+    drive_to_point_reverse_with_heading(32, 8,315, 5, 8, 0.8, 0, 0.45, 0, 0.1, 55, 0, 55, 6, 200);
     print_odom_pos();
     inertial_turn(60,270,10,0.5,0,0,8,50,30);
     print_odom_pos();
-    wall_alignment(30,30,270,20,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
+    wall_alignment(30,30,270,19,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
     inertial_turn(60,180,10,0.5,0,0,8,100,30);
     loader.set(UNLOAD);
     high_goal_aligner.set(ALIGN);
-    drive_to_point_reverse_with_heading(43, 30,15, 2.3, 8, 0.8, 0, 0.75, 0, 0.1, 70, 0, 70, 4, 200);
+    drive_to_point_reverse_with_heading(37, 30,185, 2.3, 8, 0.8, 0, 0.75, 0, 0.1, 70, 0, 70, 4, 200);
     print_odom_pos();
     intermediate_intake_stage.spin(reverse,100,pct);
     final_intake_stage.spin(fwd,100,pct);
-    vex::task::sleep(4000);
+    vex::task::sleep(2000);
     final_intake_stage.spin(reverse, 100,pct);
     intermediate_intake_stage.stop(coast);
     high_goal_aligner.set(UNALIGN);    
-    drive_straight(70,70,180,5,2,0.8,4,0,0,0.8,0,0,150);    
     drive_straight(70,70,180,-5,2,0.8,4,0,0,0.8,0,0,150);
     high_goal_aligner.set(UNALIGN);
     inertial_turn(70,270,10,0.5,0,0,4,100,30);
-    wall_alignment(30,30,270,3,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
+    wall_alignment(30,30,270,1,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
     descorer.set(UNDESCORE);    
     inertial_turn(70,180,10,0.5,0,0,4,100,30);
-    drive_straight(40,40,180,-25,2,0.8,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,195,-25,2,0.8,8,0,0,0.8,0,0,150);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);
@@ -215,11 +211,15 @@ void sawp(){
     intermediate_intake_stage.stop(coast);
     final_intake_stage.spin(fwd,100,pct);
     drive_to_point(0, -66, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
+    inertial_turn(70,90,10,0.5,0,0,4,100,30);
+    drive_straight(60,60,90,80,0.6,1,8,0,0,0.8,0,0,150);    
+    drive_straight(50,50,90,-48,0.6,1,8,0,0,0.8,0,0,150);    
+    final_intake_stage.spin(reverse,100,pct);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n", final_time);
 }
-
+/*
 void skills_auton(){
     while(inertial_sensor.isCalibrating())
         vex::task::sleep(10);
@@ -303,7 +303,13 @@ void skills_auton(){
     intermediate_intake_stage.stop(coast);
     high_goal_aligner.set(UNALIGN);    
 
-    drive_straight(70,70,140,30,2,3,8,0,0,0.8,0,0,150);
+    wall_alignment(40,70,90,48,0.5,9999,3,0.1, 0.8, 1, 0, 0, 200);
+    inertial_turn(70,90,10,0.5,0,0,8,100,30);
+    drive_straight(70,70,180,40,2,3,8,0,0,0.8,0,0,150);
+    drive_straight(70,70,180,-2,2,3,8,0,0,0.8,0,0,150);
+    drive_straight(70,70,180,40,2,3,8,0,0,0.8,0,0,150);
+    
+    
     //////////////////////////////
     //score last
     // loader.set(LOAD);
@@ -320,6 +326,29 @@ void skills_auton(){
     // drive_straight(40,70,180,50,2,4.0,8,0,0,0.8,0,0,150);
     ///////////////////////////////////////////////////////
 
+
+    float final_time = master_timer.time(seconds);
+    printf("final time:%f\n",final_time);
+}
+*/
+
+void skills_auton(){
+    while(inertial_sensor.isCalibrating())
+        vex::task::sleep(10);
+    printf("inertial sensor calibrated\n");
+    master_timer.clear();
+    inertial_sensor.resetHeading();
+
+    // odom_setup(5.875,0,3.25,0,2.0/1.0);
+    // thread odometry(odom_thread);
+    // thread telemetry(odom_telemetry);
+
+    set_pose(0,0,270);
+    
+    main_intake.spin(fwd,100, pct);
+    final_intake_stage.spin(fwd,100,pct);    
+    drive_straight(40,40,270,-5,2,1.0,8,0,0,0.8,0,0,150);
+    drive_straight(40,40,270,30,2,1.0,8,0,0,0.8,0,0,150);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);

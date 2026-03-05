@@ -21,13 +21,13 @@ competition Competition;
 
 void autonomousControl(){
     Competition.bStopTasksBetweenModes = true;
-    left_side();
+    // left_side();
     // right_side();
     // left_descore_only();
     // right_descore();
     // square();
     // sawp();
-    // skills_auton();
+    skills_auton();
     // test_routine();
     // right_alignment();
 }
@@ -36,6 +36,7 @@ void userControl(){
     Competition.bStopTasksBetweenModes = true;
     thread arcade(arcade_drive);
     thread loader(loader_pressed);
+    tracking_wheel_cylinder.set(true);
     // thread descoring(descorer_pressed);
 
 

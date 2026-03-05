@@ -51,7 +51,7 @@ timer master_timer;
 optical color_sorting_sensor(PORT11);
 
 digital_out loader(Brain.ThreeWirePort.A);
-digital_out tracking_wheel_cylinder(Brain.ThreeWirePort.B);
+digital_out tracking_wheel_cylinder(Brain.ThreeWirePort.C);
 digital_out descorer(Brain.ThreeWirePort.G);
 digital_out high_goal_aligner(Brain.ThreeWirePort.H);
 
