@@ -50,6 +50,9 @@ void left_side(){
     inertial_turn(70,90,10,0.5,0,0,4,100,30);
     wall_alignment(40,40,90,28,0.5,4,4,0.1, 0.8, 1, 0, 0, 200);
     inertial_turn(70,182,10,0.5,0,0,3,100,200);
+    inertial_turn(70,90,10,0.5,0,0,4,100,200);
+    wall_alignment(40,40,90,27.5,0.5,4,4,0.1, 0.8, 1, 0, 0, 200);
+    inertial_turn(70,182,10,0.5,0,0,3,100,30);
     descorer.set(UNDESCORE);
     drive_straight(50,50,182,-25,2,0.8,8,0,0,0.8,0,0,150);
 
@@ -184,36 +187,38 @@ void sawp(){
     main_intake.spin(fwd,100, pct);
     final_intake_stage.spin(fwd,100,pct);
     drive_to_point(0, 26, 10, 8, 0.8, 0, 1, 0, 0.1, 70, 0, 70, 4, 200);
-    vex::task::sleep(800); 
-    inertial_turn(70,90,10,0.5,0,0,4,100,30);
-    drive_straight(80,80,90,80,0.6,1,8,0,0,0.8,0,0,150);    
-    vex::task::sleep(400); 
+    vex::task::sleep(200); 
+    inertial_turn(70,90,10,0.5,0,0,8,100,30);
+    drive_straight(50,50,90,80,0.6,0.8,8,0,0,0.8,0,0,150);    
+    vex::task::sleep(200); 
     loader.set(UNLOAD);
     high_goal_aligner.set(ALIGN);
-    drive_straight(40,40,100,-30,2,1.0,8,0,0,0.8,0,0,150);    
+    drive_straight(40,40,100,-31,2,1.0,8,0,0,0.8,0,0,150);    
     intermediate_intake_stage.spin(reverse,100,pct);    
     vex::task::sleep(1000);
     high_goal_aligner.set(UNALIGN);
     intermediate_intake_stage.stop(coast);
     drive_to_point(0, 30, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
-    inertial_turn(70,225,10,0.5,0,0,4,100,30);
+    inertial_turn(70,225,10,0.5,0,0,8,100,30);
     drive_to_point(-26, 2, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
     loader.set(LOAD);
-    inertial_turn(70,180,10,0.5,0,0,4,100,30);
+    inertial_turn(70,180,10,0.5,0,0,8,100,30);
     loader.set(UNLOAD);
     drive_to_point(-26, -46, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
     loader.set(LOAD);
-    inertial_turn(70,180,10,0.5,0,0,4,100,30);
+    inertial_turn(70,180,10,0.5,0,0,8,100,30);
     drive_to_point_reverse_with_heading(-42, -32,15, 2.3, 8, 0.8, 0, 0.75, 0, 0.1, 70, 0, 70, 4, 200);
     intermediate_intake_stage.spin(reverse,100,pct);    
     final_intake_stage.spin(reverse,100,pct);
     vex::task::sleep(1000);
     intermediate_intake_stage.stop(coast);
     final_intake_stage.spin(fwd,100,pct);
-    drive_to_point(0, -66, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
-    inertial_turn(70,90,10,0.5,0,0,4,100,30);
-    drive_straight(60,60,90,80,0.6,1,8,0,0,0.8,0,0,150);    
-    drive_straight(50,50,90,-48,0.6,1,8,0,0,0.8,0,0,150);    
+    drive_to_point(-10, -70, 10, 8, 0.8, 0, 0.45, 0, 0.1, 70, 0, 70, 4, 200);
+    inertial_turn(70,90,10,0.5,0,0,8,100,30);    
+    drive_straight(70,70,90,80,0.6,0.6,8,0,0,0.8,0,0,150);    
+    loader.set(UNLOAD);    
+    high_goal_aligner.set(ALIGN);    
+    drive_straight(60,60,90,-48,0.6,1,8,0,0,0.8,0,0,150);    
     final_intake_stage.spin(reverse,100,pct);
 
     float final_time = master_timer.time(seconds);
@@ -452,6 +457,54 @@ void right_alignment(){
     inertial_turn(30,90,15,0.45,0.3,0.4,3,150,200);
     wall_alignment(30,30,90,20,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);
     inertial_turn(30,180,18,0.45,0.3,0.4,3,150,200);
+
+    float final_time = master_timer.time(seconds);
+    printf("final time:%f\n",final_time);
+}
+
+void right_quick_descore(){
+    while(inertial_sensor.isCalibrating())
+    vex::task::sleep(10);
+    printf("inertial sensor calibrated\n");
+    master_timer.clear();
+    inertial_sensor.resetHeading();
+
+    odom_setup(5.875,0,3.25,0,2.0/1.0);
+    thread odometry(odom_thread);
+    // thread telemetry(odom_telemetry);
+
+    set_pose(0,0,0);
+    
+    main_intake.spin(fwd,100, pct);
+    final_intake_stage.spin(fwd,100,pct);  
+    drive_straight(60,60,0,-5,2,10,8,0,0,0.8,0,0,150);
+    inertial_turn(60,270,15,0.45,0.3,0.4,3,150,200);
+    wall_alignment(60,60,0,3.5,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);  
+    inertial_turn(60,0,15,0.45,0.3,0.4,3,150,200);
+
+    float final_time = master_timer.time(seconds);
+    printf("final time:%f\n",final_time);
+}
+   
+void left_quick_descore(){
+    while(inertial_sensor.isCalibrating())
+    vex::task::sleep(10);
+    printf("inertial sensor calibrated\n");
+    master_timer.clear();
+    inertial_sensor.resetHeading();
+
+    odom_setup(5.875,0,3.25,0,2.0/1.0);
+    thread odometry(odom_thread);
+    // thread telemetry(odom_telemetry);
+
+    set_pose(0,0,0);
+    
+    main_intake.spin(fwd,100, pct);
+    final_intake_stage.spin(fwd,100,pct);  
+    drive_straight(60,60,0,-5,2,10,8,0,0,0.8,0,0,150);
+    inertial_turn(60,270,15,0.45,0.3,0.4,3,150,200);
+    wall_alignment(60,60,0,3.5,0.5,9999,4,0.1, 0.8, 1, 0, 0, 200);  
+    inertial_turn(60,0,15,0.45,0.3,0.4,3,150,200);
 
     float final_time = master_timer.time(seconds);
     printf("final time:%f\n",final_time);

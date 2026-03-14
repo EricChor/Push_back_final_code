@@ -96,7 +96,16 @@ void inertial_turn(int max_speed, float target_heading, float max_time, float kP
 }
 }
 
-void drive_straight(int max_linear_speed, int max_angular_speed, float target_heading, float target_distance,float acceptable_error, float max_time, float linear_kP, float linear_kI, float linear_kD, float angular_kP, float angular_kI, float angular_kD, float max_accel){
+void drive_straight(int max_linear_speed, int max_angular_speed, float target_heading, 
+    float target_distance,float acceptable_error, float max_time, float linear_kP, 
+    float linear_kI, float linear_kD, float angular_kP, float angular_kI, 
+    float angular_kD, float max_accel){
+
+
+
+
+
+        
     float end_time = master_timer.time(seconds) + max_time;
 
     float current_heading = 0;
@@ -475,13 +484,16 @@ void wall_alignment(int max_linear_speed, int max_angular_speed, float target_he
         left_drive.spin(fwd,left_drive_linear_velocity+left_drive_angular_velocity,pct);
         right_drive.spin(fwd,right_drive_linear_velocity+right_drive_angular_velocity,pct);
 
+        if((fabs(linear_error) < acceptable_error)&&(fabs(linear_derivative_error) < 6.0/100)){
+            left_drive.stop(hold);
+            right_drive.stop(hold);
+            vex::task::sleep(100);
+            current_position = massive_distance_sensor.objectDistance(inches);
+            linear_error = cos(degToRad(angular_error)) * current_position - target_distance;
         if(fabs(linear_error) < acceptable_error){
-            left_drive.setStopping(brake);
-            right_drive.setStopping(brake);
-            left_drive.stop();
-            right_drive.stop();
             printf("distance from target:%f\n",linear_error);
             break;  
+        }
         }
 
         if(master_timer.time(seconds) >= end_time){
