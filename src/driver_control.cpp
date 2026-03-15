@@ -134,7 +134,7 @@ void intake_controller(){
         }
         case SCORE_LOW:{
             stop_color_sorting();
-            main_intake.spin(fwd,60,pct);
+            main_intake.spin(fwd,100,pct);
             intermediate_intake_stage.spin(reverse,100,pct);
             final_intake_stage.spin(reverse,30,pct);
             break;
