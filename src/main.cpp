@@ -21,18 +21,29 @@ competition Competition;
 
 void autonomousControl(){
     //thread telemetry(odom_telemetry);
+<<<<<<< Updated upstream
     // test_routine();
     routine_left();
     // routine_right();
+=======
+    //test_routine();
+    // routine_left();
+    routine_right();
+>>>>>>> Stashed changes
     // auton_skills();
 }
 
 void userControl(){
 
+<<<<<<< Updated upstream
     
     thread arcade(arcade_drive);
 
     // thread loader(loader_controller);
+=======
+
+    thread drive_train(arcade_drive);
+>>>>>>> Stashed changes
     tracking_wheel_cylinder=true;
 
     color_sorting_sensor.setLightPower(100,pct);

@@ -68,26 +68,26 @@ void routine_right(){
 
     loader.set(LOAD);
 
-    drive_to_point(26,19, 6,6,0,0,0.45,0,0.1,40,0,50,3,200);
-     print_odom_pos();
+    drive_to_point(26,19, 12,6,0,0,0.45,0,0.1,40,0,50,3,200);
+    print_odom_pos();
 
     inertial_turn(45,180,3,0.45,0,0.1,4,150,200);
 
-    drive_straight(45,30,180,16,2,4,8,0.8,0,0.45,0,0.1,200);
+    drive_straight(30,30,180,16,2,5,8,0.8,0,0.45,0,0.1,200);
     print_odom_pos();
 
     vex::task::sleep(100);
 
-    drive_to_point_reverse_with_heading(25,25,0,3,8,0.8,0,0.45,0,0.1,20,0,15,2,200);
+    drive_to_point_reverse_with_heading(27,20,0,3,8,0.8,0,0.45,0,0.1,20,0,15,2,200);
     print_odom_pos();
 
     loader.set(UNLOAD);
 
     high_goal_aligner.set(ALIGN);
-    main_intake.spin(reverse,25,pct);
+    main_intake.spin(reverse,20,pct);
 
 
-    drive_to_point_reverse_with_heading(25,40,0,1.5,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
+    drive_to_point_reverse_with_heading(27,40,0,1.5,8,0.8,0,0.45,0,0.1,25,0,15,2,200);
      print_odom_pos();
 
 
