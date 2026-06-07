@@ -26,9 +26,12 @@ extern motor_group right_drive;
 extern inertial inertial_sensor;
 
 //intake
-extern motor main_intake;
-extern motor final_intake_stage;
-extern motor intermediate_intake_stage;
+extern motor lower_intake;
+extern motor high_intake;
+// extern motor intermediate_intake_stage;
+
+extern motor_group intake;
+
 
 //timers
 extern timer master_timer;

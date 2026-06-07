@@ -2,8 +2,4 @@
 
 extern void test_routine();
 
-extern void routine_right();
-
-extern void routine_left();
-
-extern void auton_skills();
+extern void right_low_auton();

@@ -236,7 +236,7 @@ void color_sorting_intake(){
     double optical_value = 0;
     double red_hue_difference = 0;
     double blue_hue_difference = 0;
-    main_intake.spin(fwd,100,pct);
+    lower_intake.spin(fwd,100,pct);
 
     alliance_color block_color = current_alliance_color;
 
@@ -271,14 +271,14 @@ void color_sorting_intake(){
         }
    
         if((current_alliance_color != block_color) && ((fabs(blue_hue_difference) < blue_threshold) || (fabs(red_hue_difference)) < red_threshold) && ((blue_threshold!=0) || (red_threshold!=0))){
-            main_intake.spin(fwd,100,pct);
-            final_intake_stage.spin(fwd,100,pct);
+            lower_intake.spin(fwd,100,pct);
+            high_intake.spin(fwd,100,pct);
         } else {
             vex::task::sleep(100);
-            main_intake.spin(reverse,100,pct);
-            final_intake_stage.spin(reverse,100,pct);
+            lower_intake.spin(reverse,100,pct);
+            high_intake.spin(reverse,100,pct);
             vex::task::sleep(250);
-            final_intake_stage.spin(fwd,100,pct);
+            high_intake.spin(fwd,100,pct);
             block_color = current_alliance_color;
         }
 

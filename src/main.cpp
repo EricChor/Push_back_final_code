@@ -20,11 +20,8 @@ using namespace vex;
 competition Competition;
 
 void autonomousControl(){
-    //thread telemetry(odom_telemetry);
-    // test_routine();
-    routine_left();
-    // routine_right();
-    // auton_skills();
+right_low_auton();
+    
 }
 
 void userControl(){
@@ -38,11 +35,9 @@ void userControl(){
     color_sorting_sensor.setLightPower(100,pct);
     color_sorting_sensor.setLight(ledState::on);
 
-    Controller.ButtonB.pressed(aligner_controller);
-    Controller.ButtonX.pressed(descorer_controller);
+    Controller.ButtonX.pressed(aligner_controller);
+    Controller.ButtonB.pressed(descorer_controller);
 
-    Controller.ButtonL1.pressed(score_high_pressed);
-    Controller.ButtonL2.pressed(score_low_pressed);
     Controller.ButtonR1.pressed(intake_pressed);
     Controller.ButtonR2.pressed(outtake_pressed);
 

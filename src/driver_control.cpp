@@ -48,23 +48,8 @@ void outtake_pressed(){
     intake_controller();
 }
 
-void score_high_pressed(){
-    if(current_intake_state != SCORE_HIGH){
-        current_intake_state = SCORE_HIGH;
-    } else {
-        current_intake_state = STOP;
-    }
-    intake_controller();
-}
 
-void score_low_pressed(){
-    if(current_intake_state != SCORE_LOW){
-        current_intake_state = SCORE_LOW;
-    } else {
-        current_intake_state = STOP;
-    }
-    intake_controller();
-}
+
 
 
 thread color_sorting_thread;
@@ -88,42 +73,26 @@ void intake_controller(){
     switch (current_intake_state){
         case STOP:{
             stop_color_sorting();
-            main_intake.stop(coast);
-            intermediate_intake_stage.stop(coast);
-            final_intake_stage.stop(coast);
+            lower_intake.stop(coast);
+            high_intake.stop(coast);
             break;
         }
 
         case INTAKE:{
-            main_intake.spin(fwd,100,pct);
-            intermediate_intake_stage.stop(coast);
-            final_intake_stage.spin(fwd,100,pct);
-            // start_color_sorting();
+            lower_intake.spin(fwd,100,pct);
+            high_intake.spin(fwd,100,pct);
+            // start_color_sorting();  
             break;
         }
 
         case OUTTAKE:{
-            stop_color_sorting();
-            main_intake.spin(reverse,100,pct);
-            intermediate_intake_stage.stop(coast);
-            final_intake_stage.spin(fwd,100,pct);
+            // stop_color_sorting();
+            lower_intake.spin(reverse,100,pct);
+            high_intake.spin(reverse,100,pct);
             break;
         }
         
-        case SCORE_HIGH:{
-            stop_color_sorting();
-            main_intake.spin(fwd,100,pct);
-            intermediate_intake_stage.spin(reverse,100,pct);
-            final_intake_stage.spin(fwd,100,pct);
-            break;
-        }
-        case SCORE_LOW:{
-            stop_color_sorting();
-            main_intake.spin(fwd,100,pct);
-            intermediate_intake_stage.spin(reverse,100,pct);
-            final_intake_stage.spin(reverse,100,pct);
-            break;
-        }
+        
     }
 }
 

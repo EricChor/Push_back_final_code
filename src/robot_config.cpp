@@ -15,32 +15,35 @@ controller Controller(primary);
 // motor left_front_motor(PORT8, ratio6_1,true);
 // motor left_rear_bottom_motor(PORT6, ratio6_1, true);
 // motor left_rear_top_motor(PORT9, ratio6_1,false);
-motor left_front_motor(PORT13, ratio6_1,true);
-motor left_rear_bottom_motor(PORT12, ratio6_1, true);
-motor left_rear_top_motor(PORT11, ratio6_1,false);  
+motor left_front_motor(PORT13, ratio18_1,false);
+motor left_rear_bottom_motor(PORT12, ratio18_1, false);
+// motor left_rear_top_motor(PORT11, ratio6_1,false);  
 
 //right drive train
 // motor right_front_motor(PORT17, ratio6_1,false);
 // motor right_rear_bottom_motor (PORT13, ratio6_1,false);
 // motor right_rear_top_motor(PORT14, ratio6_1, true);
-motor right_front_motor(PORT3, ratio6_1,false);
-motor right_rear_bottom_motor (PORT2, ratio6_1,false);
-motor right_rear_top_motor(PORT1, ratio6_1, true);
+motor right_front_motor(PORT14, ratio18_1,true);
+motor right_rear_bottom_motor (PORT15, ratio18_1,true);
+// motor right_rear_top_motor(PORT1, ratio6_1, true);
 
 //drivebase_motor_groups
-motor_group left_drive(left_front_motor,left_rear_bottom_motor,left_rear_top_motor);
-motor_group right_drive(right_front_motor,right_rear_bottom_motor,right_rear_top_motor);
+motor_group left_drive(left_front_motor,left_rear_bottom_motor);
+motor_group right_drive(right_front_motor,right_rear_bottom_motor);
 
 //inertial_sensor
-inertial inertial_sensor(PORT17);
+inertial inertial_sensor(PORT18 );
 
 //intakeport
-// motor main_intake(PORT15, ratio6_1, false);
-// motor final_intake_stage(PORT10, ratio18_1,false);
+// motor lower_intake(PORT15, ratio6_1, false);
+// motor high_intake(PORT10, ratio18_1,false);
 // motor intermediate_intake_stage(PORT16, ratio18_1, false);
-motor main_intake(PORT10, ratio6_1, false);
-motor final_intake_stage(PORT16, ratio18_1,false);
-motor intermediate_intake_stage(PORT8, ratio18_1, false);
+motor lower_intake(PORT17, ratio6_1, false);
+motor high_intake(PORT16, ratio6_1,false);
+// motor intermediate_intake_stage(PORT8, ratio18_1, false);
+
+//motor_group
+motor_group intake(lower_intake,high_intake);
 
 //timer
 timer master_timer;
