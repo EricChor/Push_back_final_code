@@ -21,27 +21,27 @@ competition Competition;
 
 void autonomousControl(){
 right_low_auton();
-    
 }
 
 void userControl(){
 
-    
-    thread arcade(arcade_drive);
+    defense_auton();
+
+    // thread arcade(arcade_drive);
 
     // thread loader(loader_controller);
-    tracking_wheel_cylinder=true;
+    // tracking_wheel_cylinder=true;
 
-    color_sorting_sensor.setLightPower(100,pct);
-    color_sorting_sensor.setLight(ledState::on);
+    // color_sorting_sensor.setLightPower(100,pct);
+    // color_sorting_sensor.setLight(ledState::on);
 
-    Controller.ButtonX.pressed(aligner_controller);
-    Controller.ButtonB.pressed(descorer_controller);
+    // Controller.ButtonX.pressed(aligner_controller);
+    // Controller.ButtonB.pressed(descorer_controller);
 
-    Controller.ButtonR1.pressed(intake_pressed);
-    Controller.ButtonR2.pressed(outtake_pressed);
+    // Controller.ButtonR1.pressed(intake_pressed);
+    // Controller.ButtonR2.pressed(outtake_pressed);
 
-    Controller.ButtonA.pressed(loader_controller);
+    // Controller.ButtonA.pressed(loader_controller);
 }
 
 
@@ -49,6 +49,6 @@ void userControl(){
 int main() {
     Competition.bStopTasksBetweenModes = true;
     Competition.autonomous(autonomousControl);
-     Competition.drivercontrol(userControl);
+    Competition.drivercontrol(userControl);
 
 }
